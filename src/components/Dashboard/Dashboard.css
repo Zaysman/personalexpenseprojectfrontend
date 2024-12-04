@@ -1,0 +1,13 @@
+#dashboard-container {
+    display: block;
+}
+
+
+#dashboard-container h2 {
+    text-align: center;
+}
+
+#expense-table, th, td {
+    border: 1px solid black;
+}
+
