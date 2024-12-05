@@ -1,5 +1,11 @@
 #dashboard-container {
-    display: block;
+    display: flex; /* Enables Flexbox */
+    flex-direction: column; /* Align children vertically */
+    align-items: center; /* Centers children horizontally */
+    justify-content: center; /* Centers children vertically */
+    /*min-height: 100vh; /* Makes container fill the full height of the viewport */
+    text-align: center; /* Optional: Center-aligns text */
+    gap: 20px; /* Adds space between child elements */
 }
 
 
@@ -11,3 +17,21 @@
     border: 1px solid black;
 }
 
+
+#expense-table .expense-delBtn {
+    background-color: #dd1717;
+}
+
+#expense-table .expense-delBtn:hover {
+    background-color: #7e0e0e;
+}
+
+#expenseBtns-container button {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#selectionBtns-container button {
+    margin-left: 5px;
+    margin-right: 5px;
+}
