@@ -64,8 +64,11 @@ function Dashboard() {
         setSelectedExpenses([]); //Clear the selected list
     };
 
-    //Computed state to determine if buttons should be disabled
+    //Computed state to determine if add & update buttons should be disabled
     const isAddUpdateDisabled = selectedExpenses.length !== 1; //returns a boolean I presume
+
+    //Computed state to determine if delete button should be disabled.
+    const isDelDisabled = selectedExpenses.length == 0; //As long as any expense is selected, then the delete button should be enabled. Otherwise it should be disabled.
     
     return (
     <div id="dashboard-container">
@@ -104,7 +107,7 @@ function Dashboard() {
         <div id="expenseBtns-container">
             <button id="addExpense-Btn" type="button" disabled={isAddUpdateDisabled}>Add Expense</button>
             <button id="updateExpense-Btn" type="button" disabled={isAddUpdateDisabled}>Update Expense</button>
-            <button id="delExpense-Btn" type="button">Delete Expense(s)</button>
+            <button id="delExpense-Btn" type="button" disabled={isDelDisabled}>Delete Expense(s)</button>
 
         </div>
         <div id = "selectionBtns-container">
