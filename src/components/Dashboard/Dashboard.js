@@ -10,11 +10,8 @@ import Expense from 'objects/Expense';
 function Dashboard() {
 
     //Test Expenses
-
     const expense1 = new Expense(997, -1,62.67, "2024-12-03", "Food", "This is a test expense hard-coded into the front-end. For testing purposes only");
-
     const expense2 = new Expense(998, -1, 43.49, "2024-12-03", "Entertainment", "This is a test expense hard-coded into the front-end. For testing purposes only");
-
     const expense3 = new Expense(999, -1, 24.95, "2024-12-03", "Groceries", "This is a test expense hard-coded into the front-end. For testing purposes only");
 
 
@@ -30,17 +27,18 @@ function Dashboard() {
         const emptyExpenses = [];
         setExpenses(testExpenses); //update state properly
         //setExpenses(emptyExpenses);
-    }, []); //Empty dependency array ensures this runs once
+    }, []); //Empty dependency array ensures this runs once when the page loads initially
     console.log("expenses.length:", expenses.length);
 
 
-    //Use effect to handle the expenses being selected
+    //Use effect to handle the expenses being selected. Fires everytime selectedexpenses changes.
     useEffect(() => {
         console.log("Currently Selected expenses:", selectedExpenses);
+
     }, [selectedExpenses]);
     
     //HANDLE FUNCTIONS
-    //Function to handle whenever a checkbox is update
+    //Function to handle whenever a checkbox is updated
     const handleCheckboxChange = (expense) => {
         setSelectedExpenses((prevSelected) => {
             if(prevSelected.includes(expense)) {
@@ -66,10 +64,9 @@ function Dashboard() {
         setSelectedExpenses([]); //Clear the selected list
     };
 
-
+    //Computed state to determine if buttons should be disabled
+    const isAddUpdateDisabled = selectedExpenses.length !== 1; //returns a boolean I presume
     
-
-
     return (
     <div id="dashboard-container">
         <h2>Expense Dashboard</h2>
@@ -83,14 +80,13 @@ function Dashboard() {
                         <th>Date</th>
                         <th>Category</th>
                         <th>Description</th>
-                        
                     </tr>
                 </thead>
                 <tbody>
                 {/*For each expense, we need to create a new row, and list each of the relevant attributes */} 
                 {expenses.length > 0 ? (expenses.map((expense) => (
                     <tr key={expense.expenseid}>
-                        <td><input type="checkbox" className="expense-checkbox" onChange={() => handleCheckboxChange(expense)} checked={selectedExpenses.includes(expense)}/></td>
+                        <td><input type="checkbox" className="expense-checkbox" onChange={() => handleCheckboxChange(expense)} checked={selectedExpenses.includes(expense)}/></td> {/*The checked property dynamically sets the checkbox state*/}
                         <td><p>{expense.expenseid}</p></td>
                         <td>${expense.amount}</td>
                         <td>{expense.date}</td>
@@ -106,9 +102,9 @@ function Dashboard() {
             </table>
         </div>
         <div id="expenseBtns-container">
-            <button id="addExpense-Btn">Add Expense</button>
-            <button id="updateExpense-Btn">Update Expense</button>
-            <button id="delExpense-Btn">Delete Expense(s)</button>
+            <button id="addExpense-Btn" type="button" disabled={isAddUpdateDisabled}>Add Expense</button>
+            <button id="updateExpense-Btn" type="button" disabled={isAddUpdateDisabled}>Update Expense</button>
+            <button id="delExpense-Btn" type="button">Delete Expense(s)</button>
 
         </div>
         <div id = "selectionBtns-container">
