@@ -114,8 +114,6 @@ function Dashboard() {
             <button id="selectAllExpenses-Btn" onClick={handleSelectAllExpenses}>Select All Expenses</button>
             <button id="deselectAllExpenses-Btn" onClick={handleUnselectAllExpenses}>Unselect All Expenses</button>
         </div>
-
-
     </div>
     );
 }

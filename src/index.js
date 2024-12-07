@@ -12,6 +12,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from 'components/Login/Login';
 import SignUp from 'components/SignUp/SignUp';
 import Dashboard from 'components/Dashboard/Dashboard';
+import ExpenseForm from 'components/ExpenseForm/ExpenseForm';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -23,6 +24,7 @@ root.render(
         <Route path = "/login" element = {<Login/>}/>
         <Route path = "/signup" element = {<SignUp/>}/>
         <Route path = "/dashboard" element = {<Dashboard/>}/>
+        <Route path = "/expenseform" element={<ExpenseForm/>}></Route>
       </Routes>
     </Router>
   </React.StrictMode>
