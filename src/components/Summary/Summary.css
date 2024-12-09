@@ -1,0 +1,29 @@
+#summary-container {
+    width: 300px;
+    margin: 100px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    display: flex; /* Enables Flexbox */
+    flex-direction: column; /* Align children vertically */
+    align-items: center; /* Centers children horizontally */
+    justify-content: center; /* Centers children vertically */
+    /*min-height: 100vh; /* Makes container fill the full height of the viewport */
+    text-align: center; /* Optional: Center-aligns text */
+}
+
+#month-container {
+    display: flex; /* Makes the container a flexbox */
+    align-items: center; /* Aligns items vertically in the center */
+    justify-content: space-between; /* Adds space between elements */
+    gap: 10px; /* Adds spacing between the child elements */
+    margin-bottom: 20px; /* Optional: Adds space below the container */
+}
+
+.input-group {
+    display: flex; /* Makes each group a flexbox */
+    align-items: center; /* Aligns label and input/select vertically */
+    gap: 5px; /* Adds spacing between label and input/select */
+}

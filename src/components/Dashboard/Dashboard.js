@@ -9,6 +9,8 @@ import Expense from 'objects/Expense';
 
 function Dashboard() {
 
+    const navigate = useNavigate();
+
     //Test Expenses
     const expense1 = new Expense(997, -1,62.67, "2024-12-03", "Food", "This is a test expense hard-coded into the front-end. For testing purposes only");
     const expense2 = new Expense(998, -1, 43.49, "2024-12-03", "Entertainment", "This is a test expense hard-coded into the front-end. For testing purposes only");
@@ -18,6 +20,14 @@ function Dashboard() {
     //State variables
     const [expenses, setExpenses] = useState([]); //This state will handle the expenses that we retrieve from the backend.
     const [selectedExpenses, setSelectedExpenses] = useState([]); //This state will handle tracking what expenses are being selected.
+
+
+
+    //NAVIGATE FUNCTIONS
+    function navigateToSummary() {
+        navigate("/summary");
+        
+    }
 
 
     //EFFECTS
@@ -113,6 +123,9 @@ function Dashboard() {
         <div id = "selectionBtns-container">
             <button id="selectAllExpenses-Btn" onClick={handleSelectAllExpenses}>Select All Expenses</button>
             <button id="deselectAllExpenses-Btn" onClick={handleUnselectAllExpenses}>Unselect All Expenses</button>
+        </div>
+        <div id = "summaryBtns-container">
+            <button id="toSummaryPage-btn" onClick={navigateToSummary}>To Summary Page</button>
         </div>
     </div>
     );

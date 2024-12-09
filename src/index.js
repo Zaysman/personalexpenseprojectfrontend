@@ -13,6 +13,7 @@ import Login from 'components/Login/Login';
 import SignUp from 'components/SignUp/SignUp';
 import Dashboard from 'components/Dashboard/Dashboard';
 import ExpenseForm from 'components/ExpenseForm/ExpenseForm';
+import Summary from 'components/Summary/Summary';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -25,6 +26,7 @@ root.render(
         <Route path = "/signup" element = {<SignUp/>}/>
         <Route path = "/dashboard" element = {<Dashboard/>}/>
         <Route path = "/expenseform" element={<ExpenseForm/>}></Route>
+        <Route path = "/summary" element={<Summary/>}></Route>
       </Routes>
     </Router>
   </React.StrictMode>
