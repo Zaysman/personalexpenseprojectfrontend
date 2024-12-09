@@ -9,8 +9,19 @@ function ExpenseForm() {
 
     const navigate = useNavigate();
     const [currExpense, setCurrExpense] = useState('');
+    const [formSubmitBtnTxt, setFormSubmitBtnTxt] = useState('');
 
     //EFFECTS
+    //Use this effect to set the button text to 'add' when the page initially loads.
+    useEffect(() => {
+        setFormSubmitBtnTxt("add");
+    }, []);
+
+    //Use effect to set the addOrUpdateString to 'add' or 'update' based on entry string
+    useEffect((string) => {
+        setFormSubmitBtnTxt(string);
+    }, [formSubmitBtnTxt]); //This effect will fire off when the formSubmitBtnTxt value is changed.
+
 
     //HANDLE FUNCTIONS
     const handleExpenseFormSubmit = (event) => {
@@ -18,6 +29,7 @@ function ExpenseForm() {
     }
 
     const addOrUpdateString = "add";
+
 
     return (
         <div id="expenseForm-container">
@@ -43,9 +55,7 @@ function ExpenseForm() {
                     <label>Description:</label>
                     <textarea id="desc-txtarea" rows="4" cols="30"></textarea>
                 </div>
-                <div className = "form-group">
-                    
-                </div>
+                <button type="submit" id="expenseSubmit-btn">Submit Expense</button>
             </form>
         </div>
     );
