@@ -51,7 +51,7 @@ function Login() {
                 //Perform username and password checks
                 if(username !== fetchedUserData.username || password !== fetchedUserData.password) {
                     console.log("Usernames or passwords don't match");
-                    setErrorMessage("The username or password entered was incorret, please try again");
+                    setErrorMessage("The username or password entered was incorrect. Please try again.");
                     setIsSubmitted(false);
                     setPassword('');
                     return;
@@ -63,7 +63,7 @@ function Login() {
 
             } catch(error) {
                 console.error("There was an error from Login Component trying to send data to backend.", error);
-                setErrorMessage('Login failed. Please try again');
+                setErrorMessage('Login failed. Please try again later.');
                 setIsSubmitted(false); //Reset submission state
             }
 
@@ -106,6 +106,8 @@ function Login() {
             <button type="submit" id="login-btn">Login</button>
         </form>
         <button id="signup-btn" onClick={navigateToSignUp}>SignUp</button>
+        {errorMessage && <div id="errorMsg-container"><p id="errorMsg">{errorMessage}</p></div>} {/*Conditionally render error message */}
+
     </div>
     );
 }
