@@ -63,7 +63,7 @@ function Login() {
 
             } catch(error) {
                 console.error("There was an error from Login Component trying to send data to backend.", error);
-                setErrorMessage('Login failed. Please try again later.');
+                setErrorMessage('Login failed. There was an issue contacting the backend');
                 setIsSubmitted(false); //Reset submission state
             }
 
