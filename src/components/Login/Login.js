@@ -4,25 +4,88 @@ import './Login.css';
 
 import JSONRequests from 'libraries/JSONRequests';
 
+const backendURL = process.env.REACT_APP_Backend_URL; //Get Url of backend application by environment
+const getUsernameMappingURL = process.env.REACT_APP_GET_USER_BY_USERNAME; //Get Mapping of getting User by username by environment
+
 
 function Login() {
-
-    const navigate = useNavigate();
+    //States
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); //State to track error message that prints when user fails to login
+    const [isSubmitted, setIsSubmitted] = useState(false); //State to track form submission
+    const [user, setUser] = useState(null); //New State to track use.
 
-    //Navigate functions
+    const navigate = useNavigate();
+    const jsonRequests = new JSONRequests();
+
+    //URLs
+    const getUserByUsernameURL = backendURL+getUsernameMappingURL+username;
+
+    //NAVIGATE FUNCTIONS
     //Navigate to signup page
     function navigateToSignUp() {
         navigate("/signup"); // Navigate to sign up page
     }
 
+    function navigateToDashboard() {
+        navigate("/dashboard", {state : {user: user}}); //Navigate to dashboard with the user
+    }
 
-    //Handle Login form-submission
+
+    //EFFECTS FUNCTIONS
+    //useEffect to login into application
+    useEffect(() => {
+        const loginUser = async () => {
+
+            //Prevent execution before form submission
+            if(!isSubmitted) {
+                return;
+            }
+
+            try {
+                console.log("Login Component sending data to backend");
+
+                const fetchedUserData = await jsonRequests.sendGetRequest(getUserByUsernameURL); //Send request to backend to retrieve User object.
+
+                //Perform username and password checks
+                if(username !== fetchedUserData.username || password !== fetchedUserData.password) {
+                    console.log("Usernames or passwords don't match");
+                    setErrorMessage("The username or password entered was incorret, please try again");
+                    setIsSubmitted(false);
+                    setPassword('');
+                    return;
+                }
+
+                //If username and passwords match, navigate to the home screen
+                console.log("Username and passwords match");
+                setUser(fetchedUserData); //Change the state of user which should fire off the effect that navigates to the dashboard
+
+            } catch(error) {
+                console.error("There was an error from Login Component trying to send data to backend.", error);
+                setErrorMessage('Login failed. Please try again');
+                setIsSubmitted(false); //Reset submission state
+            }
+
+        }
+        loginUser(); //Call the method 
+
+    }, [isSubmitted]); //This effect runs whenever isSubmitted is changed
+
+
+    //useEffect to handle navigation to dashboard once login is successful
+    useEffect(() => {
+        if(user) { //Check to see if user is null, if not, then we navigate to dashboard.
+            navigateToDashboard();
+        }
+    }, [user, navigate]);
+
+    //HANDLE FUNCTIONS
+    //Handle Login form-submission once login button is pressed.
     const handleLoginFormSubmit = (event) => {
-        event.preventDefault(); // Prevents form submission default operation. Which is reloading the page
+        event.preventDefault(); // Prevents form submission default operation. Which is reloading the page.
+        setIsSubmitted(true); //Set isSubmitted to true to trigger use effect to send data to the backend.
         console.log("submitting login form.");
-
     }
 
 
