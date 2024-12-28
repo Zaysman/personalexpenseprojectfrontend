@@ -12,6 +12,11 @@
     margin-bottom: 20px;
 }
 
+.signup-container #errorMsg {
+    text-align: center;
+    color: red;
+}
+
 .form-group {
     margin-bottom: 15px;
 }

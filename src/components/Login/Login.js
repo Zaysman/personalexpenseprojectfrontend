@@ -4,6 +4,7 @@ import './Login.css';
 
 import JSONRequests from 'libraries/JSONRequests';
 
+//Environment Variables
 const backendURL = process.env.REACT_APP_Backend_URL; //Get Url of backend application by environment
 const getUsernameMappingURL = process.env.REACT_APP_GET_USER_BY_USERNAME; //Get Mapping of getting User by username by environment
 
@@ -22,7 +23,7 @@ function Login() {
     //URLs
     const getUserByUsernameURL = backendURL+getUsernameMappingURL+username;
 
-    //NAVIGATE FUNCTIONS
+    //NAVIGATION FUNCTIONS
     //Navigate to signup page
     function navigateToSignUp() {
         navigate("/signup"); // Navigate to sign up page
