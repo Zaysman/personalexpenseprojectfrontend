@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './ExpenseForm.css';
 
 import JSONRequests from 'libraries/JSONRequests';
@@ -8,19 +8,33 @@ import JSONRequests from 'libraries/JSONRequests';
 function ExpenseForm() {
 
     const navigate = useNavigate();
-    const [currExpense, setCurrExpense] = useState('');
+    const location = useLocation();
+
+    const [currExpense, setCurrExpense] = useState();
     const [formSubmitBtnTxt, setFormSubmitBtnTxt] = useState('');
+
+    const {expense} = location.state || {};
+    console.log("Expense set on Expense Form:", expense)
+
+
+    //NAVIGATE FUNCTIONS
+
 
     //EFFECTS
     //Use this effect to set the button text to 'add' when the page initially loads.
     useEffect(() => {
-        setFormSubmitBtnTxt("add");
+        console.log("effect on page start up")
+        if(expense === undefined) {
+            setFormSubmitBtnTxt("Add Expense");
+        } else {
+            setFormSubmitBtnTxt("Update Expense");
+        }
     }, []);
 
-    //Use effect to set the addOrUpdateString to 'add' or 'update' based on entry string
-    useEffect((string) => {
-        setFormSubmitBtnTxt(string);
-    }, [formSubmitBtnTxt]); //This effect will fire off when the formSubmitBtnTxt value is changed.
+    // //Use effect to set the addOrUpdateString to 'add' or 'update' based on entry string
+    // useEffect((string) => {
+    //     setFormSubmitBtnTxt(string);
+    // }, [formSubmitBtnTxt]); //This effect will fire off when the formSubmitBtnTxt value is changed.
 
 
     //HANDLE FUNCTIONS
@@ -55,7 +69,7 @@ function ExpenseForm() {
                     <label>Description:</label>
                     <textarea id="desc-txtarea" rows="4" cols="30"></textarea>
                 </div>
-                <button type="submit" id="expenseSubmit-btn">Submit Expense</button>
+                <button type="submit" id="expenseSubmit-btn">{formSubmitBtnTxt}</button>
             </form>
         </div>
     );
