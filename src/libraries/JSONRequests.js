@@ -110,7 +110,6 @@ class JSONRequests {
     }
 }
 
-
 }
 
 export default JSONRequests;

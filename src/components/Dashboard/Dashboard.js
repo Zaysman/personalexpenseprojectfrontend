@@ -46,11 +46,11 @@ function Dashboard() {
     }
 
     function navigateToExpenseForm() {
-        navigate("/expenseform");
+        navigate("/expenseform", {state: {user : user}});
     }
 
     function navigateToExpenseForm(expense) {
-        navigate("/expenseform", {state : {expense : expense}});
+        navigate("/expenseform", {state : {user : user, expense : expense}});
     }
 
 

@@ -39,6 +39,25 @@
     margin-bottom: 5px;
 }
 
+#expenseSubmit-btn:hover {
+    background-color: #0056b3;
+}
+
+#toDashboard-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(9, 51, 78);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+#toDashboard-btn:hover {
+    background-color: rgb(5, 25, 37);
+}
+
 .form-group #category-select {
    
 }
@@ -48,6 +67,3 @@
     width: 100%;
 }
 
-#expenseSubmit-btn:hover {
-    background-color: #0056b3;
-}
