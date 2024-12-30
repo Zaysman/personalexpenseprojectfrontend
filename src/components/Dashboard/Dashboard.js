@@ -125,6 +125,7 @@ function Dashboard() {
     //Function to handle update expense press
     const handleUpdateExpenseBtn = (expense) => {
         //check to see if selected expenses current contains one element
+        console.log("Going to Expense Form to update expense.");
         if(selectedExpenses.length !== 1) {
             console.log("Somehow, multiple expenses were selected and the update button was pressed. Returning.");
             return;
