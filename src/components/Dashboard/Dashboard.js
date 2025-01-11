@@ -9,14 +9,16 @@ import Expense from 'objects/Expense';
 //Environment Variables
 const backendURL = process.env.REACT_APP_Backend_URL; //Get URL of backend application by environment
 const getExpensesByUserIDMappingURL = process.env.REACT_APP_GET_EXPENSE_BY_USERID; //Get Mapping for retrieving expenses by user id.
-
+const deleteExpensesByIDs = process.env.REACT_APP_DELETE_EXPENSES_BY_ExpenseIDS; //Get Mapping for deleting multiple expenses via a list of expenseids.
 
 function Dashboard() {
 
     //State variables
     const [expenses, setExpenses] = useState([]); //This state will handle the expenses that we retrieve from the backend.
     const [selectedExpenses, setSelectedExpenses] = useState([]); //This state will handle tracking what expenses are being selected.
+    const [isDeleteExpense, setisDeleteExpense] = useState(false); //Boolean state to control when we trigger the delete effect.
 
+    const [refresh, setRefresh] = useState(false); //State for triggering refresh
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -34,7 +36,7 @@ function Dashboard() {
 
     //URLs
     const getExpensesByUserID = backendURL + getExpensesByUserIDMappingURL + user.id;
-
+    const deleteExpensesByExpenseIDSURL = backendURL + deleteExpensesByIDs;
 
     //NAVIGATE FUNCTIONS
     function navigateToSummary() {
@@ -81,7 +83,49 @@ function Dashboard() {
         }
         getExpensesFromBackend();
         
-    }, []);
+    }, [refresh]); // Trigger re-fetch when refresh changes
+
+    //use effect to delete expenses via the frontend.
+    useEffect(() => {
+        const deleteExpenses = async () => {
+
+            //If isDeleteExpense is false, then end execution and return.
+            if(isDeleteExpense == false) {
+                setisDeleteExpense(false);
+                return;
+            }
+
+            try {
+                console.log("Dashboard Component sending request to delete selected expenses to backend.");
+                
+                //Collect expense ids to be deleted.
+                //var expenseIDstoDelete = selectedExpenses.map((expense) => expense.expenseid);
+                var expenseIDstoDelete = [];
+                for(var i = 0; i < selectedExpenses.length; i++) {
+                    expenseIDstoDelete.push(selectedExpenses[i].expenseid);
+                }
+                
+                console.log("expenseids to delete:", expenseIDstoDelete);
+
+                //Send requests for deletion
+                const deleteRequestStatus = await jsonRequests.sendDeleteRequest(deleteExpensesByExpenseIDSURL, expenseIDstoDelete);
+                console.log("deleteRequestStatus:", deleteRequestStatus);
+                if(deleteRequestStatus == true) {
+                    console.log("Delete Expenses By IDS successful.");
+                    setRefresh((prev) => !prev); // Toggle refresh to reload data
+                } else {
+                    console.log("Delete Expense by IDS unsuccessful.");
+                }
+
+            } catch(error) {
+                console.error("There was an error from the dashboard component trying to send a delete request to the backend");
+            } finally {
+                setisDeleteExpense(false); //Reset delete flag
+            }
+        }
+        deleteExpenses();
+
+    }, [isDeleteExpense]); //Dependency array for effect to handle deleting arrays.
 
 
     //Use effect to handle the expenses being selected. Fires everytime selectedexpenses changes.
@@ -131,6 +175,12 @@ function Dashboard() {
             return;
         }
         navigateToExpenseForm(selectedExpenses[0]);
+    }
+
+    //Function to handle delete expense(s) press
+    const handleDeleteExpensesBtn = () => {
+        console.log("Expenses to delete:", selectedExpenses);
+        setisDeleteExpense(true);
     }
 
     const handleLogoutButtonPress = (event) => {
@@ -183,7 +233,7 @@ function Dashboard() {
         <div id="expenseBtns-container">
             <button id="addExpense-Btn" type="button" disabled={isAddDisabled} onClick={handleAddExpenseBtn}>Add Expense</button>
             <button id="updateExpense-Btn" type="button" disabled={isUpdateDisabled} onClick={handleUpdateExpenseBtn}>Update Expense</button>
-            <button id="delExpense-Btn" type="button" disabled={isDelDisabled}>Delete Expense(s)</button>
+            <button id="delExpense-Btn" type="button" disabled={isDelDisabled} onClick={handleDeleteExpensesBtn}>Delete Expense(s)</button>
 
         </div>
         <div id = "selectionBtns-container">

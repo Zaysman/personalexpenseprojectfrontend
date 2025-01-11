@@ -71,7 +71,7 @@ function ExpenseForm() {
     }, []); //Empty Dependency Array means this effect will only run once the page loads 
 
 
-    //Use this effect to handle post request to backend.
+    //Use this effect to handle post request to backend to create expense for user.
     useEffect(() => {
         const createExpense = async () => {
             console.log("ExpenseForm FormState:", formState);
@@ -140,6 +140,7 @@ function ExpenseForm() {
     }, [isSubmitted, formState]); //This effect will run when either isSubmitted or formState Changes
 
     
+    
     //HANDLE FUNCTIONS
     //Handle function to handle submit form button being clicked.
     const handleExpenseFormSubmit = (event) => {
@@ -152,7 +153,6 @@ function ExpenseForm() {
         setIsSubmitted(false);
         navigateToDashboard();
     }
-
 
     return (
         <div id="expenseForm-container">

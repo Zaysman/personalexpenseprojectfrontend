@@ -86,7 +86,7 @@ class JSONRequests {
 
     //Sends a DELETE request, handles response, and confirms success on an OK response
     async sendDeleteRequest(destinationURL) {
-    console.log("Sending DELETE request to:", destinationURL);
+    console.log("Sending Delete request to:", destinationURL);
 
     try {
         const response = await fetch(destinationURL, {
@@ -107,6 +107,32 @@ class JSONRequests {
     } catch (error) {
         console.error("There was an issue with sending the DELETE request:", error);
         throw error; // Re-throw the error for the caller to handle
+    }
+}
+
+async sendDeleteRequest(destinationURL, payload) {
+    console.log("Sending Delete request to:", destinationURL);
+
+    try {
+        const response = await fetch(destinationURL, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        // If response is not ok, then throw error
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        console.log("No issues with deletion. Returning true.");
+        return true; //Indicate successful deletion
+
+
+    } catch (error) {
+        console.error("There was an issue with sending the Delete request:", error);
+        throw error; //Re-throw the error for calling method to handle.
     }
 }
 
