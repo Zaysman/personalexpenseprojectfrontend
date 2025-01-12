@@ -112,9 +112,11 @@ function Dashboard() {
                 console.log("deleteRequestStatus:", deleteRequestStatus);
                 if(deleteRequestStatus == true) {
                     console.log("Delete Expenses By IDS successful.");
+                    handleUnselectAllExpenses(); //Deselect all expenses.
                     setRefresh((prev) => !prev); // Toggle refresh to reload data
                 } else {
                     console.log("Delete Expense by IDS unsuccessful.");
+                    handleUnselectAllExpenses(); //Deselect all expenses.
                 }
 
             } catch(error) {

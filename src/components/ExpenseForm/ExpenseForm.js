@@ -75,6 +75,7 @@ function ExpenseForm() {
     useEffect(() => {
         const createExpense = async () => {
             console.log("ExpenseForm FormState:", formState);
+            console.log("isSubmitted:", isSubmitted);
 
             //Prevent execution before form submission
             if(isSubmitted == false) {
@@ -150,7 +151,9 @@ function ExpenseForm() {
 
     //Handle function to handle return to dashboard input
     const handletoDashboardBtnClick = (event) => {
-        setIsSubmitted(false);
+        event.preventDefault(); //Since this button is inside the form tag, the browser my try to interpret it as a button of type submit which causes the form to reset the page. Preventing it stops the page from sending a request to the backend.
+
+        setIsSubmitted(false); //Set isSubmitted to true to trigger useEffect. Should have it end execution before sending fetch request.
         navigateToDashboard();
     }
 
