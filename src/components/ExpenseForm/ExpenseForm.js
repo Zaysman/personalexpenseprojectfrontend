@@ -34,8 +34,12 @@ function ExpenseForm() {
     const [isCustomCategoryModalOpen, setIsCustomCategoryModalOpen] = useState(false); //State the governs whether the modal will be displayed.
     const [isAddingCustomCategory, setIsAddingCustomCategory] = useState(false); //State that determines whether or not we're adding a custom category.
     const [isAddCustomCategoryTxtFldDisplayed, setIsAddCustomCategoryTxtFldDisplayed] = useState(false); //State the determines if the text field for entering new custom category is displayed or not.
-    const [customCategory, setCustomCategory] = useState(); //State that holds the value of CustomCategory we're going to send.
+    const [customCategoryToAdd, setCustomCategoryToAdd] = useState(); //State that holds the value of CustomCategory name we're going to send.
     
+    const [selectedCustomCategoryEntryID, setSelectedCustomCategoryEntryID] = useState(null); //State to track the selected option in the Modal.
+
+    const [customCategoryToDelete, setCustomCategoryToDelete] = useState(); //State that holds the custom category that we're going to delete.
+    const [isDeletingCustomCategory, setIsDeletingCustomCategory] = useState(false); //State that holds whether or not we're going to delete a custom category.
 
 
     //States for the expense
@@ -68,6 +72,7 @@ function ExpenseForm() {
     const getCustomCategoriesByUseridURL = backendURL+getExpensesByUseridMappingURL+user.id;
 
     const createCustomCategoryURL = backendURL + postCustomCategoryMappingURL;
+    var deleteCustomCategoryURL = backendURL + deleteCustomCategoryByCategoryEntryIDMappingURL;
     
     
 
@@ -211,12 +216,13 @@ function ExpenseForm() {
                 //Create payload
                 const customCategoryPayload = {
                     userid: user.id,
-                    categoryName: customCategory
+                    categoryName: customCategoryToAdd
                 };
 
                 const response = await jsonRequests.sendPostRequest(createCustomCategoryURL, customCategoryPayload);
 
                 console.log("Response from backend after sending request to create Custom Category: ", response);
+                setCheckForCustomCategories(true); //Check for custom categories so we can update our list of custom categories
             } catch(error) {
                 console.error("There was an error in the ExpenseForm component when creating a new Custom Category");
 
@@ -227,6 +233,34 @@ function ExpenseForm() {
         addCustomCategory();
 
     }, [isAddingCustomCategory]) 
+
+    //use effect to delete a custom category and send delete request to backend.
+    useEffect (() => {
+        const deleteCustomCategory =  async () => {
+
+            //end execution if isDeletingCustomCategory is false
+            if(isDeletingCustomCategory == false) {
+                return;
+            }
+
+            try {
+                console.log("ExpenseForm component sending delete request to delete Custom Category.");
+                deleteCustomCategoryURL = deleteCustomCategoryURL + selectedCustomCategoryEntryID;
+
+
+                const response = await jsonRequests.sendDeleteRequest(deleteCustomCategoryURL);
+                setCheckForCustomCategories(true); //Check for custom categories so we can update our list of custom categories
+
+            } catch(error) {
+                console.error("There was an error in the ExpenseForm component when trying to delete a custom Category.")
+
+            } finally {
+                setIsDeletingCustomCategory(false); //Set state to false
+            }
+        }
+        deleteCustomCategory();
+
+    }, [isDeletingCustomCategory])
 
     //HANDLE FUNCTIONS
     //Handle function to handle submit form button being clicked.
@@ -254,6 +288,12 @@ function ExpenseForm() {
         handleCustomCategoryModalOpen();
     }
 
+    const handleCustomCategoryChange = (event) => {
+        //console.log("Changing Selected Custom Category:", event.target.value);
+        setSelectedCustomCategoryEntryID(event.target.value); //Update the value of the value that is selected in the drop down.
+        console.log("Currently selected Custom Category:", selectedCustomCategoryEntryID);
+    }
+
     const handleAddCustomCategoryBtnClick = (event) => {
         setIsAddCustomCategoryTxtFldDisplayed(true); //When the add CustomCategory button is clicked, we want to be able to display the text field.
     }
@@ -264,7 +304,9 @@ function ExpenseForm() {
     }  
 
     const handleDeleteCustomCategoryBtnClick = (event) => {
-        
+        console.log("Deleting Current Selected CustomCategory: ", selectedCustomCategoryEntryID); // 
+        setIsDeletingCustomCategory(true); //Change this state to trigger the effect to send a delete request to the backend to delete custom category by category entry id.
+       
     }
     
 
@@ -291,19 +333,20 @@ function ExpenseForm() {
                         {customCategories.length > 0 ? (customCategories.map((customCategory) => (
                             <option value={customCategory.categoryName}>{customCategory.categoryName}</option>
                         ))) : (
-                            <option value="travel">Travel</option>
+                            <option value="">--No Custom Options to Display--</option>
                         )}
                     </select>
                     <button id="addCategory-btn" onClick={handleManageCustomCategoriesClick}>Manage Custom Categories</button>
+                    
                     <Modal id="customCategory-mdl" open={isCustomCategoryModalOpen} onClose={handleCustomCategoryModalClose}>
                         <Box id="modalselect-box"> {/* Box from Material UI. Used as a generic Container for grouping other components */}
                             <div id="modalselect-div">
-                                <select id="modalCategory-select">
+                                <select id="modalCategory-select" value={selectedCustomCategoryEntryID} onChange={(e) => setSelectedCustomCategoryEntryID(e.target.value)}>
                                     {/*Adding in the custom categories retrieved by user*/}
                                     {customCategories.length > 0 ? (customCategories.map((customCategory) => (
-                                        <option value={customCategory.categoryName}>{customCategory.categoryName}</option>
+                                        <option id={customCategory.categoryentryid} value={customCategory.categoryentryid}>{customCategory.categoryName}</option>
                                     ))) : (
-                                        <option value="travel">Travel</option>
+                                        <option value="">--No Custom Options to Display--</option>
                                     )}
                                 </select>
                             </div>
@@ -313,11 +356,12 @@ function ExpenseForm() {
                             </div>
                             {isAddCustomCategoryTxtFldDisplayed && <div id="customCategoryTxtfld-div"> 
                                 <label>Custom Category: </label>
-                                <input type="text" id="customCategory-txtfld" value={customCategory} onChange={(e) => setCustomCategory(e.target.value)}/>
+                                <input type="text" id="customCategory-txtfld" value={customCategoryToAdd} onChange={(e) => setCustomCategoryToAdd(e.target.value)}/>
                                 <button id="addCustomCategory-btn" onClick={handleSubmitCustomCategoryBtnClick}>Submit Category</button>
                             </div>}
                         </Box>
                     </Modal>
+
                 </div>
                 <div className = "form-group">
                     <label>Description:</label>
