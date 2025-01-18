@@ -236,7 +236,6 @@ function Dashboard() {
             <button id="addExpense-Btn" type="button" disabled={isAddDisabled} onClick={handleAddExpenseBtn}>Add Expense</button>
             <button id="updateExpense-Btn" type="button" disabled={isUpdateDisabled} onClick={handleUpdateExpenseBtn}>Update Expense</button>
             <button id="delExpense-Btn" type="button" disabled={isDelDisabled} onClick={handleDeleteExpensesBtn}>Delete Expense(s)</button>
-
         </div>
         <div id = "selectionBtns-container">
             <button id="selectAllExpenses-Btn" onClick={handleSelectAllExpenses}>Select All Expenses</button>

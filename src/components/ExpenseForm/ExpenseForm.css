@@ -58,12 +58,62 @@
     background-color: rgb(5, 25, 37);
 }
 
-.form-group #category-select {
-   
+/* Center the select and button */
+#category-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Space between the select and button */
+    margin-top: 10px; /* Optional: Adds some spacing above this section */
 }
 
+/* Optional styling for the select and button */
+#category-select {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+}
+
+#addCategory-btn {
+    margin-top: 5px;
+    Width: 100%;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+}
+
+#addCategory-btn:hover {
+    background-color: #0056b3;
+}
 
 .form-group #desc-txtarea {
     width: 100%;
+}
+
+
+/* Styling for the Modal box*/
+
+#modal-box {
+    
+}
+
+/*
+#modalselect-div {
+    background-color: white;
+}
+
+#modalBtn-div {
+    background-color: white;
+}
+*/
+
+#modalselect-box {
+    background-color: white;
+    width: 50%;
+    
 }
 
