@@ -40,7 +40,7 @@ function Dashboard() {
 
     //NAVIGATE FUNCTIONS
     function navigateToSummary() {
-        navigate("/summary");
+        navigate("/summary", {state: {user : user}});
     }
 
     function navigateToLogin() {

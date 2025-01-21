@@ -27,6 +27,32 @@ class JSONRequests {
         }
     }
 
+    async sendGetRequest(destinationURL, payload) {
+        console.log("sending Get request with payload to: ", destinationURL);
+
+        try {
+            const response = await fetch(destinationURL, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            //If response is not ok, then throw error
+            if(!response.ok) {
+                throw new Error('Network response was not ok ' + response.stateText);
+            }
+
+            //If the response is ok, then we return the data from the backend
+            const data = response.json();
+            return data;
+
+        } catch(error) {
+            console.error("There was an issue with sending the GET request");
+        }
+    }
+
     //Sends a Post request, handles response and returns data after an ok response.
     async sendPostRequest(destinationURL, payload) {
         console.log("sending Post request to:", destinationURL);
